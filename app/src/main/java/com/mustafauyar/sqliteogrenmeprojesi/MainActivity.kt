@@ -33,7 +33,9 @@ class MainActivity : AppCompatActivity() {
 //            db.execSQL("""INSERT INTO urunler (isim, fiyat) VALUES ("Gozluk",750)""")
 
 
-            val cursor = db.rawQuery("SELECT * FROM urunler",null)
+//            val cursor = db.rawQuery("SELECT * FROM urunler",null)
+            val cursor = db.rawQuery("SELECT * FROM urunler WHERE isim LIKE 'A%'",null)
+
             val idColumIndex = cursor.getColumnIndex("id")
             val nameColumnIndex = cursor.getColumnIndex("isim")
             val priceColumnIndex = cursor.getColumnIndex("fiyat")
