@@ -23,8 +23,9 @@ class MainActivity : AppCompatActivity() {
             myShop["Takke"] = 10
             myShop["gozluk"] = 750
             myShop["saat"] = 87
+            myShop["ebise"] = 150
             myShop.forEach { (k, v) ->
-                Log.d("Cursor dict", "$k : $v")
+                Log.d("Cursor eklenen ürünler", "$k : $v")
                 db.execSQL("""INSERT INTO urunler (isim, fiyat) VALUES ('$k',$v)""") // isimler belirtirken tek tırnak kullanılmalıdır
                 // her bir key ve value leri tabloya kaydet Cursor dict etiketi ile logcat de göster
             }
@@ -34,16 +35,22 @@ class MainActivity : AppCompatActivity() {
 
 
 //            val cursor = db.rawQuery("SELECT * FROM urunler",null)
-            val cursor = db.rawQuery("SELECT * FROM urunler WHERE isim LIKE 'A%'",null)
-
+//            val cursor = db.rawQuery("SELECT * FROM urunler WHERE isim LIKE 'A%'",null) // filtreleme
+            db.execSQL("""DELETE FROM urunler WHERE id = 1""") // id 1 olanı sil tablodan
+            val cursor = db.rawQuery("SELECT * FROM urunler",null) // verileri al hepsini
             val idColumIndex = cursor.getColumnIndex("id")
             val nameColumnIndex = cursor.getColumnIndex("isim")
             val priceColumnIndex = cursor.getColumnIndex("fiyat")
-            val blockTag = "Cursor ürünler"
+            val blockTag = "Cursor Database"
             while (cursor.moveToNext()){
-                Log.d(blockTag, "ID : ${cursor.getInt(idColumIndex)}")
-                Log.d(blockTag,"İSİM : ${cursor.getString(nameColumnIndex)}")
-                Log.d(blockTag,"FİYAT : ${cursor.getInt(priceColumnIndex)}")
+                var text = String()
+                text += "ID : ${cursor.getInt(idColumIndex)} ,"
+                text += "İSİM : ${cursor.getString(nameColumnIndex)} ,"
+                text += "FİYAT : ${cursor.getInt(priceColumnIndex)}"
+                Log.d(blockTag, text)
+//                Log.d(blockTag, "ID : ${cursor.getInt(idColumIndex)}")
+//                Log.d(blockTag,"İSİM : ${cursor.getString(nameColumnIndex)}")
+//                Log.d(blockTag,"FİYAT : ${cursor.getInt(priceColumnIndex)}")
             }
             cursor.close()
 //            db.execSQL("DROP TABLE urunler")// veri tabanı table sil.
