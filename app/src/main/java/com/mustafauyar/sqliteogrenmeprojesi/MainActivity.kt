@@ -13,16 +13,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+
         try {
             veritabaniOlustur()
             // tablo oluştur
             veriTabaniUrunEkle()
             // urunleri ekle
-            veritabaniGoster()
+            binding.textViewDb.text = veritabaniGoster()
+//            veritabaniGoster()
             // veritabani ürünleri göster
-            indirimYap(oran = 50)
+            binding.textViewIndirim.text = indirimYap(oran = 50)
             // urunlere indirim yap
-            veritabaniGoster()
+            binding.textViewSonFiyat.text = veritabaniGoster()
             // tekrar veri tabani göster
 
         } catch (e:Exception){
@@ -52,28 +55,35 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    fun indirimYap(oran:Int=10){
+    fun indirimYap(oran:Int=10):String{
+        var indirimText = String()
         myShop.forEach {(k,v) ->
             val indirim = (v*oran/100)
             val yeniFiyat = v-indirim
-            Log.d("cursor indirim","$k : $v  indirim oranı = $indirim  indirimli fiyat :${v-indirim}")
+            indirimText += "$k : $v  indirim oranı = % $oran  indirimli fiyat :${v-indirim}\n"
+            Log.d("cursor indirim","$k : $v  indirim oranı = % $oran  indirimli fiyat :${v-indirim}")
             veritabaniUrunGuncelle(k,yeniFiyat)
         }
+    return indirimText
     }
-    fun veritabaniGoster(db:SQLiteDatabase=myDb){
+    fun veritabaniGoster(db:SQLiteDatabase=myDb):String{
         val cursor = db.rawQuery("SELECT * FROM urunler",null) // verileri al hepsini
         val idColumIndex = cursor.getColumnIndex("id")
         val nameColumnIndex = cursor.getColumnIndex("isim")
         val priceColumnIndex = cursor.getColumnIndex("fiyat")
         val blockTag = "Cursor Database"
+        var toShow = String()
         while (cursor.moveToNext()){
             var text = String()
             text += "ID : ${cursor.getInt(idColumIndex)} ,"
             text += "İSİM : ${cursor.getString(nameColumnIndex)} ,"
             text += "FİYAT : ${cursor.getInt(priceColumnIndex)}"
-            Log.d(blockTag, text)
+            toShow += text +"\n"
+//            Log.d(blockTag, text)
         }
+        Log.d(blockTag,toShow)
         cursor.close()
+        return toShow
     }
     fun veritabaniUrunGuncelle(urun:String,yeniFiyat:Int){
            myDb.execSQL("""UPDATE urunler SET fiyat = $yeniFiyat WHERE isim ='$urun'""") // elbise nin fiyatını güncelle 999 olarak
