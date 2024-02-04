@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         myShop.forEach {(k,v) ->
             val indirim = (v*oran/100)
             val yeniFiyat = v-indirim
-            indirimText += "$k : $v  indirim oranı = % $oran  indirimli fiyat :${v-indirim}\n"
+            indirimText += "$k : $v ₺  indirim oranı = % $oran  indirimli fiyat :${v-indirim} ₺\n"
             Log.d("cursor indirim","$k : $v  indirim oranı = % $oran  indirimli fiyat :${v-indirim}")
             veritabaniUrunGuncelle(k,yeniFiyat)
         }
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             var text = String()
             text += "ID : ${cursor.getInt(idColumIndex)} ,"
             text += "İSİM : ${cursor.getString(nameColumnIndex)} ,"
-            text += "FİYAT : ${cursor.getInt(priceColumnIndex)}"
+            text += "FİYAT : ${cursor.getInt(priceColumnIndex)} ₺"
             toShow += text +"\n"
 //            Log.d(blockTag, text)
         }
