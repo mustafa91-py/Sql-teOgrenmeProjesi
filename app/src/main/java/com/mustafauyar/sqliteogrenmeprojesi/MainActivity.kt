@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
             myShop["Takke"] = 10
             myShop["gozluk"] = 750
             myShop["saat"] = 87
-            myShop["ebise"] = 150
+            myShop["elbise"] = 150
             myShop.forEach { (k, v) ->
                 Log.d("Cursor eklenen ürünler", "$k : $v")
                 db.execSQL("""INSERT INTO urunler (isim, fiyat) VALUES ('$k',$v)""") // isimler belirtirken tek tırnak kullanılmalıdır
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
             val nameColumnIndex = cursor.getColumnIndex("isim")
             val priceColumnIndex = cursor.getColumnIndex("fiyat")
             val blockTag = "Cursor Database"
+            db.execSQL("""UPDATE urunler SET fiyat = 999 WHERE isim = 'elbise'""") // elbise nin fiyatını güncelle 999 olarak
             while (cursor.moveToNext()){
                 var text = String()
                 text += "ID : ${cursor.getInt(idColumIndex)} ,"
