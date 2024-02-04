@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(blockTag,"FİYAT : ${cursor.getInt(priceColumnIndex)}")
             }
             cursor.close()
-//            db.execSQL("DROP TABLE urunler")// veri tabanı table sil
+//            db.execSQL("DROP TABLE urunler")// veri tabanı table sil.
         } catch (e:Exception){
             e.printStackTrace()
         }
